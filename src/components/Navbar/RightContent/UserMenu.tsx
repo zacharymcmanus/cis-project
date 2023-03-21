@@ -1,4 +1,5 @@
 import { authModalState } from "@/atoms/authModalAtom";
+import { communityState } from "@/atoms/communitiesAtom";
 import { auth } from "@/firebase/clientApp";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
@@ -17,14 +18,21 @@ import { CgProfile } from "react-icons/cg";
 import { HiPaperAirplane } from "react-icons/hi2";
 import { MdOutlineLogin } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
-import { useSetRecoilState } from "recoil";
+import { useResetRecoilState, useSetRecoilState } from "recoil";
 
 type UserMenuProps = {
     user?: User | null;
 };
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
+    const resetCommunityState = useResetRecoilState(communityState);
     const setAuthModalState = useSetRecoilState(authModalState);
+
+    const logout = async () => {
+        await signOut(auth);
+        resetCommunityState();
+        // clear community state
+    };
 
     return (
         <Menu>
@@ -103,7 +111,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
                                 bg: "blue.500",
                                 color: "white",
                             }}
-                            onClick={() => signOut(auth)}
+                            onClick={logout}
                         >
                             <Flex align="center">
                                 <Icon

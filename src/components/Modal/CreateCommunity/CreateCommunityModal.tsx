@@ -75,7 +75,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
         setLoading(true);
 
         try {
-            // Create community document and communitySnippet subcollection document on user
+            // create community document and communitySnippet subcollection document on user
             const communityDocRef = doc(
                 firestore,
                 "communities",

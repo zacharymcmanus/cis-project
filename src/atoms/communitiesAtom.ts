@@ -10,42 +10,42 @@ export interface Community {
     imageURL?: string;
 }
 
-// export interface CommunitySnippet {
-//     communityId: string;
-//     isModerator?: boolean;
-//     imageURL?: string;
-// }
+export interface CommunitySnippet {
+    communityId: string;
+    isModerator?: boolean;
+    imageURL?: string;
+}
 
-// interface CommunityState {
-//     [key: string]:
-//         | CommunitySnippet[]
-//         | { [key: string]: Community }
-//         | Community
-//         | boolean
-//         | undefined;
-//     mySnippets: CommunitySnippet[];
-//     initSnippetsFetched: boolean;
-//     visitedCommunities: {
-//         [key: string]: Community;
-//     };
-//     currentCommunity: Community;
-// }
+interface CommunityState {
+    [key: string]:
+        | CommunitySnippet[]
+        | { [key: string]: Community }
+        | Community
+        | boolean
+        | undefined;
+    mySnippets: CommunitySnippet[];
+    initSnippetsFetched: boolean;
+    visitedCommunities: {
+        [key: string]: Community;
+    };
+    currentCommunity: Community;
+}
 
-// export const defaultCommunity: Community = {
-//     id: "",
-//     creatorId: "",
-//     numberOfMembers: 0,
-//     privacyType: "public",
-// };
+export const defaultCommunity: Community = {
+    id: "",
+    creatorId: "",
+    numberOfMembers: 0,
+    privacyType: "public",
+};
 
-// export const defaultCommunityState: CommunityState = {
-//     mySnippets: [],
-//     initSnippetsFetched: false,
-//     visitedCommunities: {},
-//     currentCommunity: defaultCommunity,
-// };
+export const defaultCommunityState: CommunityState = {
+    mySnippets: [],
+    initSnippetsFetched: false,
+    visitedCommunities: {},
+    currentCommunity: defaultCommunity,
+};
 
-// export const communityState = atom<CommunityState>({
-//     key: "communitiesState",
-//     default: defaultCommunityState,
-// });
+export const communityState = atom<CommunityState>({
+    key: "communitiesState",
+    default: defaultCommunityState,
+});

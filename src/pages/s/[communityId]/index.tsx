@@ -4,6 +4,9 @@ import { GetServerSidePropsContext } from "next";
 import React from "react";
 import { firestore } from "../../../firebase/clientApp";
 import safeJsonStringify from "safe-json-stringify";
+import CommunityNotFound from "@/components/Community/CommunityNotFound";
+import Header from "@/components/Community/Header";
+import PageContent from "@/components/Layout/PageContent";
 
 type CommunityPageProps = {
     communityData: Community;
@@ -14,10 +17,22 @@ const CommunityPage: React.FC<CommunityPageProps> = ({
 }) => {
     console.log("here is data", communityData);
 
-    if (!communityData) {
-        return <div>that section does not exist</div>;
+    if (!communityData.id) {
+        return <CommunityNotFound />;
     }
-    return <div>hi</div>;
+    return (
+        <>
+            <Header communityData={communityData} />
+            <PageContent>
+                <>
+                    <div>LHS</div>
+                </>
+                <>
+                    <div>RHS</div>
+                </>
+            </PageContent>
+        </>
+    );
 };
 
 export async function getServerSideProps(
@@ -29,17 +44,19 @@ export async function getServerSideProps(
         const communityDocRef = doc(
             firestore,
             "communities",
-            context.query.community as string
+            context.query.communityId as string
         );
         const communityDoc = await getDoc(communityDocRef);
         return {
             props: {
-                communityData: JSON.parse(
-                    safeJsonStringify({
-                        id: communityDoc.id,
-                        ...communityDoc.data(),
-                    })
-                ),
+                communityData: communityDoc.exists()
+                    ? JSON.parse(
+                          safeJsonStringify({
+                              id: communityDoc.id,
+                              ...communityDoc.data(),
+                          })
+                      )
+                    : "",
             },
         };
     } catch (error) {
