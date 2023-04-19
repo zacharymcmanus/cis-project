@@ -30,13 +30,13 @@ import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 
 type CreateCommunityModalProps = {
-    open: boolean;
+    isOpen: boolean;
     handleClose: () => void;
     userId: string;
 };
 
 const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
-    open,
+    isOpen,
     handleClose,
 }) => {
     const [communityName, setCommunityName] = useState("");
@@ -122,7 +122,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
 
     return (
         <>
-            <Modal isOpen={open} onClose={handleClose} size="lg">
+            <Modal isOpen={isOpen} onClose={handleClose} size="lg">
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader
