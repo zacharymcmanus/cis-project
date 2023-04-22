@@ -61,8 +61,6 @@ const Posts: React.FC<PostsProps> = ({ communityData }) => {
         setLoading(false);
     };
 
-    console.log("HERE IS POST STATE", postStateValue);
-
     useEffect(() => {
         getPosts();
     }, [communityData]);

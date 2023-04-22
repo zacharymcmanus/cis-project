@@ -56,8 +56,6 @@ const CommunityPage: React.FC<CommunityPageProps> = ({
 export async function getServerSideProps(
     context: GetServerSidePropsContext
 ) {
-    console.log("GET SERVER SIDE PROPS RUNNING");
-
     try {
         const communityDocRef = doc(
             firestore,

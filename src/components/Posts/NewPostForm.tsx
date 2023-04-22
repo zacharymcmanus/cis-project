@@ -28,6 +28,7 @@ import useSelectFile from "@/hooks/useSelectFile";
 
 type NewPostFormProps = {
     user: User;
+    communityImageURL?: string;
 };
 
 const formTabs: TabItem[] = [
@@ -46,7 +47,10 @@ export type TabItem = {
     icon: typeof Icon.arguments;
 };
 
-const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
+const NewPostForm: React.FC<NewPostFormProps> = ({
+    user,
+    communityImageURL,
+}) => {
     const router = useRouter();
     const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
     const [textInputs, setTextInputs] = useState({
@@ -68,7 +72,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
                 collection(firestore, "posts"),
                 {
                     communityId,
-                    // communityImageURL: communityImageURL || "",
+                    communityImageURL: communityImageURL || "",
                     creatorId: user.uid,
                     userDisplayText: user.email!.split("@")[0],
                     title,

@@ -34,15 +34,15 @@ type PostItemProps = {
     // onVote: () => {};
     onDeletePost: (post: Post) => Promise<boolean>;
     onSelectPost?: (post: Post) => void;
+    homePage?: boolean;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
     post,
     userIsCreator,
-    // userVoteValue,
     onDeletePost,
-    // onVote,
     onSelectPost,
+    homePage,
 }) => {
     const [loadingImage, setLoadingImage] = useState(true);
     const [error, setError] = useState(false);
@@ -131,6 +131,42 @@ const PostItem: React.FC<PostItemProps> = ({
                         fontSize="9pt"
                     >
                         {/* Home Page Check */}
+                        {homePage && (
+                            <>
+                                {post.communityImageURL ? (
+                                    <Image
+                                        src={post.communityImageURL}
+                                        borderRadius="full"
+                                        boxSize="18px"
+                                        mr={2}
+                                    />
+                                ) : (
+                                    <Icon
+                                        as={FaReddit}
+                                        fontSize="18pt"
+                                        mr={1}
+                                        color="blue.500"
+                                    />
+                                )}
+                                <Link href={`s/${post.communityId}`}>
+                                    <Text
+                                        fontWeight={700}
+                                        _hover={{
+                                            textDecoration:
+                                                "underline",
+                                        }}
+                                        onClick={(event) =>
+                                            event.stopPropagation()
+                                        }
+                                    >{`s/${post.communityId}`}</Text>
+                                </Link>
+                                <Icon
+                                    as={BsDot}
+                                    color="gray.500"
+                                    fontSize={8}
+                                />
+                            </>
+                        )}
                         <Text>
                             Posted by u/{post.creatorDisplayName}
                             {moment(
@@ -177,26 +213,6 @@ const PostItem: React.FC<PostItemProps> = ({
                             {post.numberOfComments}
                         </Text>
                     </Flex>
-                    {/* <Flex
-                        align="center"
-                        p="8px 10px"
-                        borderRadius={4}
-                        _hover={{ bg: "gray.200" }}
-                        cursor="pointer"
-                    >
-                        <Icon as={IoArrowRedoOutline} mr={2} />
-                        <Text fontSize="9pt">Share</Text>
-                    </Flex>
-                    <Flex
-                        align="center"
-                        p="8px 10px"
-                        borderRadius={4}
-                        _hover={{ bg: "gray.200" }}
-                        cursor="pointer"
-                    >
-                        <Icon as={IoBookmarkOutline} mr={2} />
-                        <Text fontSize="9pt">Save</Text>
-                    </Flex> */}
                     {userIsCreator && (
                         <Flex
                             align="center"
