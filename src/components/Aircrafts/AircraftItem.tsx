@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import moment from "moment";
 import { NextRouter } from "next/router";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { BsChat, BsDot } from "react-icons/bs";
 import {
     IoArrowDownCircleOutline,
@@ -24,40 +24,40 @@ import {
 } from "react-icons/io5";
 
 import Link from "next/link";
-import { Post } from "@/atoms/postsAtom";
+import { Aircraft } from "@/atoms/aircraftAtom";
 import { GiCommercialAirplane } from "react-icons/gi";
 
-type PostItemProps = {
-    post: Post;
+type AircraftItemProps = {
+    aircraft: Aircraft;
     userIsCreator: boolean;
-    onDeletePost: (post: Post) => Promise<boolean>;
-    onSelectPost?: (post: Post) => void;
+    onDeleteAircraft: (aircraft: Aircraft) => Promise<boolean>;
+    onSelectAircraft?: (aircraft: Aircraft) => void;
     homePage?: boolean;
 };
 
-const PostItem: React.FC<PostItemProps> = ({
-    post,
+const AircraftItem: React.FC<AircraftItemProps> = ({
+    aircraft,
     userIsCreator,
-    onDeletePost,
-    onSelectPost,
+    onDeleteAircraft,
+    onSelectAircraft,
     homePage,
 }) => {
     const [loadingImage, setLoadingImage] = useState(true);
     const [error, setError] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
-    const singlePostPage = !onSelectPost;
+    const singleAircraftPage = !onSelectAircraft;
 
     // handles error handling within this component
     const handleDelete = async () => {
         setLoadingDelete(true);
         try {
-            const success = await onDeletePost(post);
+            const success = await onDeleteAircraft(aircraft);
 
             if (!success) {
-                throw new Error("failed to delete post");
+                throw new Error("failed to delete aircraft");
             }
 
-            console.log("post was successfully deleted");
+            console.log("aircraft was successfully deleted");
         } catch (error: any) {
             setError(error.message);
         }
@@ -68,13 +68,17 @@ const PostItem: React.FC<PostItemProps> = ({
         <Flex
             border="1px solid"
             bg="white"
-            borderColor={singlePostPage ? "white" : "gray.300"}
-            borderRadius={singlePostPage ? "4px 4px 0px 0px " : "4px"}
+            borderColor={singleAircraftPage ? "white" : "gray.300"}
+            borderRadius={
+                singleAircraftPage ? "4px 4px 0px 0px " : "4px"
+            }
             _hover={{
-                borderColor: singlePostPage ? "none" : "gray.500",
+                borderColor: singleAircraftPage ? "none" : "gray.500",
             }}
-            cursor={singlePostPage ? "unset" : "pointer"}
-            onClick={() => onSelectPost && onSelectPost(post)}
+            cursor={singleAircraftPage ? "unset" : "pointer"}
+            onClick={() =>
+                onSelectAircraft && onSelectAircraft(aircraft)
+            }
         >
             <Flex direction="column" width="100%">
                 {error && (
@@ -95,9 +99,11 @@ const PostItem: React.FC<PostItemProps> = ({
                         {/* Home Page Check */}
                         {homePage && (
                             <>
-                                {post.communityImageURL ? (
+                                {aircraft.communityImageURL ? (
                                     <Image
-                                        src={post.communityImageURL}
+                                        src={
+                                            aircraft.communityImageURL
+                                        }
                                         borderRadius="full"
                                         boxSize="18px"
                                         mr={2}
@@ -110,7 +116,9 @@ const PostItem: React.FC<PostItemProps> = ({
                                         color="blue.500"
                                     />
                                 )}
-                                <Link href={`s/${post.communityId}`}>
+                                <Link
+                                    href={`s/${aircraft.communityId}`}
+                                >
                                     <Text
                                         fontWeight={700}
                                         _hover={{
@@ -120,7 +128,7 @@ const PostItem: React.FC<PostItemProps> = ({
                                         onClick={(event) =>
                                             event.stopPropagation()
                                         }
-                                    >{`s/${post.communityId}`}</Text>
+                                    >{`s/${aircraft.communityId}`}</Text>
                                 </Link>
                                 <Icon
                                     as={BsDot}
@@ -129,20 +137,26 @@ const PostItem: React.FC<PostItemProps> = ({
                                 />
                             </>
                         )}
-                        <Text>
-                            Posted by u/{post.creatorDisplayName}
+                        {/* <Text>
+                            created by u/
+                            {aircraft.creatorId}
                             {moment(
                                 new Date(
-                                    post.createdAt.seconds * 1000
+                                    aircraft.createdAt.seconds * 1000
                                 )
                             ).fromNow()}
-                        </Text>
+                        </Text> */}
                     </Stack>
                     <Text fontSize="12pt" fontWeight={600}>
-                        {post.title}
+                        Aircraft: {aircraft.tail}
                     </Text>
-                    <Text fontSize="10pt">{post.body}</Text>
-                    {post.imageURL && (
+                    <Text fontSize="10pt">
+                        Location: {aircraft.location}
+                    </Text>
+                    <Text fontSize="10pt">
+                        Mission Status: {aircraft.status}
+                    </Text>
+                    {aircraft.imageURL && (
                         <Flex justify="center" align="center" p={2}>
                             {loadingImage && (
                                 <Skeleton
@@ -152,8 +166,8 @@ const PostItem: React.FC<PostItemProps> = ({
                                 />
                             )}
                             <Image
-                                src={post.imageURL}
-                                alt="postimage"
+                                src={aircraft.imageURL}
+                                alt="aircraftimage"
                                 display={
                                     loadingImage ? "none" : "unset"
                                 }
@@ -170,14 +184,14 @@ const PostItem: React.FC<PostItemProps> = ({
                         _hover={{ bg: "gray.200" }}
                         cursor="pointer"
                     >
-                        <Icon as={BsChat} mr={2} />
+                        {/* <Icon as={BsChat} mr={2} />
                         <Text fontSize="9pt">
-                            {post.numberOfComments}
-                        </Text>
+                            {aircraft.numberOfComments}
+                        </Text> */}
                     </Flex>
                     {userIsCreator && (
                         <Flex
-                            align="center"
+                            align="space-between"
                             p="8px 10px"
                             borderRadius={4}
                             _hover={{ bg: "gray.200" }}
@@ -188,6 +202,10 @@ const PostItem: React.FC<PostItemProps> = ({
                                 <Spinner size="sm" />
                             ) : (
                                 <>
+                                    <Icon as={AiOutlineEdit} mr={2} />
+                                    <Text fontSize="9pt" mr={2}>
+                                        Update Aircraft
+                                    </Text>
                                     <Icon
                                         as={AiOutlineDelete}
                                         mr={2}
@@ -202,4 +220,4 @@ const PostItem: React.FC<PostItemProps> = ({
         </Flex>
     );
 };
-export default PostItem;
+export default AircraftItem;

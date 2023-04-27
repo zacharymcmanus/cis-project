@@ -10,12 +10,13 @@ import {
 } from "react-icons/io5";
 import { SlLocationPin } from "react-icons/sl";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
-// import useDirectory from "../../../hooks/useDirectory";
+import useAircrafts from "../../../hooks/useAircrafts";
 
 type ActionIconsProps = {};
 
 const ActionIcons: React.FC<ActionIconsProps> = () => {
     // const { toggleMenuOpen } = useDirectory();
+    const { seeAircrafts } = useAircrafts();
     return (
         <Flex alignItems="center" flexGrow={1}>
             <Box
@@ -31,6 +32,7 @@ const ActionIcons: React.FC<ActionIconsProps> = () => {
                     cursor="pointer"
                     borderRadius={4}
                     _hover={{ bg: "gray.200" }}
+                    onClick={() => seeAircrafts}
                 >
                     <Icon as={SlLocationPin} fontSize={20} />
                 </Flex>
