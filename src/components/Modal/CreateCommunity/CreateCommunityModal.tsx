@@ -1,4 +1,5 @@
 import { auth, firestore } from "@/firebase/clientApp";
+import useDirectory from "@/hooks/useDirectory";
 import {
     Button,
     Modal,
@@ -24,19 +25,20 @@ import {
     serverTimestamp,
     setDoc,
 } from "firebase/firestore";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
 import { HiLockClosed } from "react-icons/hi";
 
 type CreateCommunityModalProps = {
-    open: boolean;
+    isOpen: boolean;
     handleClose: () => void;
     userId: string;
 };
 
 const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
-    open,
+    isOpen,
     handleClose,
 }) => {
     const [communityName, setCommunityName] = useState("");
@@ -45,6 +47,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
     const [error, setError] = useState("");
     const [user] = useAuthState(auth);
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
+    const { toggleMenuOpen } = useDirectory();
 
     const handleChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -112,6 +116,9 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
                     }
                 );
             });
+            handleClose();
+            toggleMenuOpen();
+            router.push(`s/${communityName}`);
         } catch (error: any) {
             console.log("Transaction error", error);
             setError(error.message);
@@ -122,7 +129,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
 
     return (
         <>
-            <Modal isOpen={open} onClose={handleClose} size="lg">
+            <Modal isOpen={isOpen} onClose={handleClose} size="lg">
                 <ModalOverlay />
                 <ModalContent>
                     <ModalHeader

@@ -1,16 +1,16 @@
 import { communityState } from "@/atoms/communitiesAtom";
+import NewAircraftForm from "@/components/Aircrafts/NewAircraftForm";
 import PageContent from "@/components/Layout/PageContent";
-import NewPostForm from "@/components/Posts/NewPostForm";
 import { auth } from "@/firebase/clientApp";
 import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilValue } from "recoil";
 
-const SubmitPostPage: React.FC = () => {
+const AircraftPostPage: React.FC = () => {
     const [user] = useAuthState(auth);
-    const communityStateValue = useRecoilValue(communityState);
-    console.log("communityStateValue", communityStateValue);
+    // const communityStateValue = useRecoilValue(communityState);
+    // console.log("communityStateValue", communityStateValue);
     return (
         <PageContent>
             <>
@@ -19,20 +19,12 @@ const SubmitPostPage: React.FC = () => {
                     borderBottom="1px solid"
                     borderColor="white"
                 >
-                    <Text>Create a post</Text>
+                    <Text>Add a new aircraft</Text>
                 </Box>
-                {user && (
-                    <NewPostForm
-                        user={user}
-                        communityImageURL={
-                            communityStateValue.currentCommunity
-                                .imageURL
-                        }
-                    />
-                )}
+                {user && <NewAircraftForm user={user} />}
             </>
             <>{/* <About /> */}</>
         </PageContent>
     );
 };
-export default SubmitPostPage;
+export default AircraftPostPage;

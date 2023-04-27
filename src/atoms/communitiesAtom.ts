@@ -5,7 +5,7 @@ export interface Community {
     id: string;
     creatorId: string;
     numberOfMembers: number;
-    privacyType: "public" | "restricted" | "private";
+    privacyType: "public" | "restrictied" | "private";
     createdAt?: Timestamp;
     imageURL?: string;
 }
@@ -24,7 +24,7 @@ interface CommunityState {
         | boolean
         | undefined;
     mySnippets: CommunitySnippet[];
-    initSnippetsFetched: boolean;
+    snippetsFetched: boolean;
     visitedCommunities: {
         [key: string]: Community;
     };
@@ -40,7 +40,7 @@ export const defaultCommunity: Community = {
 
 export const defaultCommunityState: CommunityState = {
     mySnippets: [],
-    initSnippetsFetched: false,
+    snippetsFetched: false,
     visitedCommunities: {},
     currentCommunity: defaultCommunity,
 };

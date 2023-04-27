@@ -1,4 +1,4 @@
-import { Community } from "@/atoms/communitiesAtom";
+import { Community, communityState } from "@/atoms/communitiesAtom";
 import {
     Box,
     Flex,
@@ -9,7 +9,9 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FaReddit } from "react-icons/fa";
+import { SlNotebook } from "react-icons/sl";
 import useCommunityData from "../../hooks/useCommunityData";
+
 // import { getMySnippets } from "../helpers/firestore";
 
 type HeaderProps = {
@@ -26,18 +28,31 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
 
     return (
         <Flex direction="column" width="100%" height="146px">
-            <Box height="50%" bg="blue.400"></Box>
+            <Box height="50%" bg="#00338F"></Box>
             <Flex justify="center" bg="white" flexGrow={1}>
                 <Flex width="95%" maxWidth="860px">
-                    {communityData.imageURL ? (
-                        <Image alt="image" />
-                    ) : (
-                        <Icon
-                            as={FaReddit}
-                            fontSize={64}
+                    {communityStateValue.currentCommunity
+                        ?.imageURL ? (
+                        <Image
+                            src={
+                                communityStateValue.currentCommunity
+                                    .imageURL
+                            }
+                            alt="image"
+                            borderRadius="full"
+                            boxSize="66px"
                             position="relative"
                             top={-3}
                             color="blue.500"
+                            border="4px solid white"
+                        />
+                    ) : (
+                        <Icon
+                            as={SlNotebook}
+                            fontSize={64}
+                            position="relative"
+                            top={-3}
+                            // color="blue.500"
                             border="4px solid white"
                             borderRadius="50%"
                         />
@@ -52,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({ communityData }) => {
                                 fontSize="10pt"
                                 color="gray.400"
                             >
-                                s/{communityData.id}
+                                {/* s/{communityData.id} */}
                             </Text>
                         </Flex>
                         <Button
